@@ -110,6 +110,11 @@ void BoardRepository::deleteColumn(int id) {
     char *errorMessage = nullptr;
 
     result = sqlite3_exec(database, sqlDeleteItem.c_str(), NULL, 0, &errorMessage);
+    handleSQLError(result, errorMessage);
+
+    if (SQLITE_OK == result) {
+        return;
+    }
 }
 
 std::vector<Item> BoardRepository::getItems(int columnId) {
@@ -157,6 +162,7 @@ void BoardRepository::deleteItem(int columnId, int itemId) {
     char *errorMessage = nullptr;
 
     result = sqlite3_exec(database, sqlDeleteItem.c_str(), NULL, 0, &errorMessage);
+    handleSQLError(result, errorMessage);
 }
 
 void BoardRepository::handleSQLError(int statementResult, char *errorMessage) {
