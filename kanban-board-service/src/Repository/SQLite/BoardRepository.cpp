@@ -163,7 +163,7 @@ std::optional<Item> BoardRepository::postItem(int columnId, std::string title, i
 
 std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, int itemId, std::string title, int position) {
     string sqlPutItem = "UPDATE item SET name = '" + title + "' , position = '" + to_string(position) + "' WHERE id = '" + to_string(itemId) +
-                        "' AND columnId = '" + to_string(columnId) + "'";
+                        "' AND column_id = '" + to_string(columnId) + "'";
     time_t now = time(0);
     char *datetime = ctime(&now);
     int result = 0;
