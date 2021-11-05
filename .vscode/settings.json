@@ -31,6 +31,7 @@
     "python.testing.pytestEnabled": true,
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "optional": "cpp"
     }
 }
