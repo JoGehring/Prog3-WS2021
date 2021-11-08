@@ -101,7 +101,9 @@ std::optional<Prog3::Core::Model::Column> BoardRepository::putColumn(int id, std
     string sqlPutColumn =
         "UPDATE column "
         "SET name = '" +
-        name + "', position = '" + to_string(position) + "' WHERE id = '" + to_string(id) + "';";
+        name + "', position = '" + to_string(position) + "'"
+                                                         "WHERE id = '" +
+        to_string(id) + "';";
 
     int result = 0;
     char *errorMessage = nullptr;
