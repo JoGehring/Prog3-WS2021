@@ -143,11 +143,12 @@ std::vector<Item> BoardRepository::getItems(int columnId) {
 
     int result = 0;
     char *errormessage = nullptr;
-    std::vector<Item> items;
+    std::vector<string> items;
+    std::vector<Item> resultList;
 
     result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallback, &items, &errormessage);
     handleSQLError(result, errormessage);
-    return items;
+    return resultList;
 }
 
 std::optional<Item> BoardRepository::getItem(int columnId, int itemId) {
