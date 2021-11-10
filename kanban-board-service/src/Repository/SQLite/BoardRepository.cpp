@@ -112,11 +112,14 @@ std::optional<Prog3::Core::Model::Column> BoardRepository::putColumn(int id, std
     handleSQLError(result, errorMessage);
 
     if (SQLITE_OK == result) {
-        Column returnColumn(id, name, position);
-        for (Item i : getItems(id)) {
-            returnColumn.addItem(i);
+        result = sqlite3_changes(database);
+        if (1 == result) {
+            Column returnColumn(id, name, position);
+            for (Item i : getItems(id)) {
+                returnColumn.addItem(i);
+            }
+            return returnColumn;
         }
-        return returnColumn;
     }
     return std::nullopt;
 }
@@ -186,7 +189,7 @@ std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, i
     char *errorMessage = nullptr;
 
     string sqlPutItem =
-        "UPDATE item SET title = " + title + ", position = " + to_string(position) + "WHERE id = '" +
+        "UPDATE item SET title = " + title + ", position = " + to_string(position) + ", date = " + datetime + "WHERE id = '" +
         to_string(itemId) + "' AND column_id = '" + to_string(columnId) + "'";
 
     result = sqlite3_exec(database, sqlPutItem.c_str(), 0, NULL, &errorMessage);
