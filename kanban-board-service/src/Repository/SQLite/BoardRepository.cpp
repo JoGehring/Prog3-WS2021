@@ -139,7 +139,7 @@ void BoardRepository::deleteColumn(int id) {
 
 std::vector<Item> BoardRepository::getItems(int columnId) {
     string sqlGetItems =
-        "SELECT id, title, position, date FROM item WHERE column_id = '" + to_string(columnId) + "'";
+        "SELECT id, title, position, date FROM item JOIN column ON column.id = " + to_string(columnId);
 
     int result = 0;
     char *errormessage = nullptr;
