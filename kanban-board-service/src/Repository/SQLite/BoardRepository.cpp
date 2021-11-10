@@ -192,7 +192,6 @@ std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, i
     handleSQLError(result, errorMessage);
 
     if (SQLITE_OK == result) {
-        int itemId = sqlite3_last_insert_rowid(database);
         return Item(itemId, title, position, datetime);
     }
     return std::nullopt;
@@ -259,7 +258,7 @@ int BoardRepository::queryCallback(void *data, int numberOfColumns, char **field
 
     for (int i = 0; i < numberOfColumns; i++) {
         Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
-        items->insert(item);
+        items->push_back(item);
     }
     return 0;
 }
