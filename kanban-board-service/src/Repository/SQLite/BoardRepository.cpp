@@ -84,6 +84,9 @@ std::optional<Column> BoardRepository::getColumn(int id) {
     handleSQLError(result, errorMessage);
 
     if (SQLITE_OK == result) {
+        for (Item i : getItems(id)) {
+            column.addItem(i);
+        }
         return column;
     }
     return std::nullopt;
@@ -296,10 +299,6 @@ int BoardRepository::queryCallbackSingleColumn(void *data, int numberOfColumns, 
     column->setID(stoi(fieldValues[0]));
     column->setName(fieldValues[1]);
     column->setPos(stoi(fieldValues[2]));
-
-    for (Item i : getItems(stoi(fieldValues[0]))) {
-        column->addItem(i);
-    }
 
     return 0;
 }
