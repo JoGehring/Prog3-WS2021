@@ -262,9 +262,8 @@ void BoardRepository::createDummyData() {
 int BoardRepository::queryCallback(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
     vector<Item> *items = (vector<Item> *)data;
 
-    for (int i = 0; i < numberOfColumns; i++) {
-        Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
-        items->push_back(item);
-    }
+    Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
+    items->push_back(item);
+
     return 0;
 }
