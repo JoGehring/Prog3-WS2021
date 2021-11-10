@@ -187,8 +187,9 @@ std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, i
     char *errorMessage = nullptr;
 
     string sqlPutItem =
-        "UPDATE item SET title = " + title + ", position = " + to_string(position) + "WHERE id = '" +
+        "UPDATE item SET title = '" + title + "', position = '" + to_string(position) + "' WHERE id = '" +
         to_string(itemId) + "' AND column_id = '" + to_string(columnId) + "'";
+
     Item item(0, "", 0, "");
     result = sqlite3_exec(database, sqlPutItem.c_str(), queryCallbackSingleItem, &item, &errorMessage);
     handleSQLError(result, errorMessage);
