@@ -250,60 +250,63 @@ void BoardRepository::createDummyData() {
     result = sqlite3_exec(database, sqlInserDummyItems.c_str(), NULL, 0, &errorMessage);
     handleSQLError(result, errorMessage);
 }
-
+// static vector<Item> getVector() {
+//     static vector<Item> items;
+//     return items;
+// }
 /*
   I know source code comments are bad, but this one is to guide you through the use of sqlite3_exec() in case you want to use it.
   sqlite3_exec takes a "Callback function" as one of its arguments, and since there are many crazy approaches in the wild internet,
   I want to show you how the signature of this "callback function" may look like in order to work with sqlite3_exec()
 */
 int BoardRepository::queryCallback(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
-    vector<Item> *items = (vector<Item> *)data;
+    // vector<Item> items = getVector();
 
-    string idString = "";
-    string nameString = "";
-    string positionString = "";
-    string dateString = "";
+    // string idString = "";
+    // string nameString = "";
+    // string positionString = "";
+    // string dateString = "";
 
-    for (int i = 0; i < numberOfColumns; i++) {
-        string string = fieldValues[i];
+    // for (int i = 0; i < numberOfColumns; i++) {
+    //     string string = fieldValues[i];
 
-        idString = "";
-        nameString = "";
-        positionString = "";
-        dateString = "";
+    //     idString = "";
+    //     nameString = "";
+    //     positionString = "";
+    //     dateString = "";
 
-        bool idBool = true;
-        bool nameBool = false;
-        bool positionBool = false;
-        bool dateBool = false;
+    //     bool idBool = true;
+    //     bool nameBool = false;
+    //     bool positionBool = false;
+    //     bool dateBool = false;
 
-        for (int i = 0; i < string.length(); i++) {
-            char c = string[i];
+    //     for (int i = 0; i < string.length(); i++) {
+    //         char c = string[i];
 
-            if (idBool && c >= '0' && c <= '9') {
-                idString += c;
-            } else {
-                idBool = false;
-                nameBool = true;
-            }
-            if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
-                nameString += c;
-            } else {
-                nameBool = false;
-                positionBool = true;
-            }
-            if (positionBool && c >= '0' && c <= '9') {
-                positionString += c;
-            } else {
-                positionBool = false;
-                dateBool = true;
-            }
-            if (dateBool) {
-                dateString += c;
-            }
-        }
-        Item item(stoi(idString), nameString, stoi(positionString), dateString);
-        items->push_back(item);
-    }
+    //         if (idBool && c >= '0' && c <= '9') {
+    //             idString += c;
+    //         } else {
+    //             idBool = false;
+    //             nameBool = true;
+    //         }
+    //         if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
+    //             nameString += c;
+    //         } else {
+    //             nameBool = false;
+    //             positionBool = true;
+    //         }
+    //         if (positionBool && c >= '0' && c <= '9') {
+    //             positionString += c;
+    //         } else {
+    //             positionBool = false;
+    //             dateBool = true;
+    //         }
+    //         if (dateBool) {
+    //             dateString += c;
+    //         }
+    //     }
+    //     Item item(stoi(idString), nameString, stoi(positionString), dateString);
+    //     items.push_back(item);
+    // }
     return 0;
 }

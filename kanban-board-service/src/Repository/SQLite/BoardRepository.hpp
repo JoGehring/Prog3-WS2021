@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Repository/RepositoryIf.hpp"
 #include "sqlite3.h"
 
@@ -14,7 +13,7 @@ class BoardRepository : public RepositoryIf {
     void initialize();
     void createDummyData();
     void handleSQLError(int statementResult, char *errorMessage);
-
+    //static std::vector<Prog3::Core::Model::Item> getVector();
     static bool isValid(int id) {
         return id != INVALID_ID;
     }
