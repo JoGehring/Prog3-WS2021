@@ -186,19 +186,13 @@ std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, i
     char *errorMessage = nullptr;
 
     string sqlPutItem =
-        "UPDATE item SET title = '" + title + "', position = '" + to_string(position) + "', date = '" + datetime + "'"
-                                                                                                                   "WHERE id = '" +
+        "UPDATE item SET title = " + title + ", position = " + to_string(position) + ", date = " + datetime "WHERE id = '" +
         to_string(itemId) + "' AND column_id = '" + to_string(columnId) + "'";
-
-    Item item(-1, "test", 1, "test");
-    vector<Item> items;
 
     result = sqlite3_exec(database, sqlPutItem.c_str(), queryCallback, &items, &errorMessage);
     handleSQLError(result, errorMessage);
-
     if (SQLITE_OK == result) {
-        item = items.front();
-        return item;
+        return Item(itemId, title, position, datetime);
     }
     return std::nullopt;
 }
