@@ -192,7 +192,7 @@ std::vector<Item> BoardRepository::getItems(int columnId) {
             }
         }
         Item item(stoi(idString), nameString, stoi(positionString), dateString);
-        resultList->push_back(item);
+        resultList.push_back(item);
     }
 
     return resultList;
