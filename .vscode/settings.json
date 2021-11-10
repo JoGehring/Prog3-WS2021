@@ -32,6 +32,12 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
         "iosfwd": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "vector": "cpp",
+        "string": "cpp",
+        "bitset": "cpp",
+        "*.ipp": "cpp",
+        "__node_handle": "cpp",
+        "regex": "cpp"
     }
 }

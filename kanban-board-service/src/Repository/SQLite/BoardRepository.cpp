@@ -112,8 +112,11 @@ std::optional<Prog3::Core::Model::Column> BoardRepository::putColumn(int id, std
     handleSQLError(result, errorMessage);
 
     if (SQLITE_OK == result) {
-        //int columnId = sqlite3_last_insert_rowid(database);
-        return Column(id, name, position);
+        Column returnColumn(id, name, position);
+        for (Item i : getItems(id)) {
+            returnColumn.addItem(i);
+        }
+        return returnColumn;
     }
     return std::nullopt;
 }
@@ -135,7 +138,16 @@ void BoardRepository::deleteColumn(int id) {
 }
 
 std::vector<Item> BoardRepository::getItems(int columnId) {
-    throw NotImplementedException();
+    string sqlGetItems =
+        "SELECT id, title, position, date FROM item WHERE column_id = '" + to_string(columnId) + "'";
+
+    int result = 0;
+    char *errormessage = nullptr;
+    std::vector<Item> items;
+
+    result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallback, &items, &errormessage);
+    handleSQLError(result, errormessage);
+    return items;
 }
 
 std::optional<Item> BoardRepository::getItem(int columnId, int itemId) {
@@ -245,5 +257,53 @@ void BoardRepository::createDummyData() {
   I want to show you how the signature of this "callback function" may look like in order to work with sqlite3_exec()
 */
 int BoardRepository::queryCallback(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
+    vector<Item> *items = (vector<Item> *)data;
+
+    string idString = "";
+    string nameString = "";
+    string positionString = "";
+    string dateString = "";
+
+    for (int i = 0; i < numberOfColumns; i++) {
+        string string = fieldValues[i];
+
+        idString = "";
+        nameString = "";
+        positionString = "";
+        dateString = "";
+
+        bool idBool = true;
+        bool nameBool = false;
+        bool positionBool = false;
+        bool dateBool = false;
+
+        for (int i = 0; i < string.length(); i++) {
+            char c = string[i];
+
+            if (idBool && c >= '0' && c <= '9') {
+                idString += c;
+            } else {
+                idBool = false;
+                nameBool = true;
+            }
+            if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
+                nameString += c;
+            } else {
+                nameBool = false;
+                positionBool = true;
+            }
+            if (positionBool && c >= '0' && c <= '9') {
+                positionString += c;
+            } else {
+                positionBool = false;
+                dateBool = true;
+            }
+            if (dateBool) {
+                dateString += c;
+            }
+        }
+        Item item(stoi(idString), nameString, stoi(positionString), dateString);
+        items->push_back(item);
+    }
     return 0;
 }
