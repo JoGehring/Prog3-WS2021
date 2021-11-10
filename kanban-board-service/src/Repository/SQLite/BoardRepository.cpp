@@ -148,6 +148,53 @@ std::vector<Item> BoardRepository::getItems(int columnId) {
 
     result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallback, &items, &errormessage);
     handleSQLError(result, errormessage);
+
+    string idString = "";
+    string nameString = "";
+    string positionString = "";
+    string dateString = "";
+
+    for (string s : items) {
+
+        idString = "";
+        nameString = "";
+        positionString = "";
+        dateString = "";
+
+        bool idBool = true;
+        bool nameBool = false;
+        bool positionBool = false;
+        bool dateBool = false;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s[i];
+
+            if (idBool && c >= '0' && c <= '9') {
+                idString += c;
+            } else {
+                idBool = false;
+                nameBool = true;
+            }
+            if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
+                nameString += c;
+            } else {
+                nameBool = false;
+                positionBool = true;
+            }
+            if (positionBool && c >= '0' && c <= '9') {
+                positionString += c;
+            } else {
+                positionBool = false;
+                dateBool = true;
+            }
+            if (dateBool) {
+                dateString += c;
+            }
+        }
+        Item item(stoi(idString), nameString, stoi(positionString), dateString);
+        resultList->push_back(item);
+    }
+
     return resultList;
 }
 
@@ -263,52 +310,6 @@ void BoardRepository::createDummyData() {
 int BoardRepository::queryCallback(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
     vector<string> *items = (vector<string> *)data;
 
-    // string idString = "";
-    // string nameString = "";
-    // string positionString = "";
-    // string dateString = "";
-
-    // // for (int i = 0; i < numberOfColumns; i++) {
-    // //     string string = fieldValues[i];
-
-    // //     idString = "";
-    // //     nameString = "";
-    // //     positionString = "";
-    // //     dateString = "";
-
-    // //     bool idBool = true;
-    // //     bool nameBool = false;
-    // //     bool positionBool = false;
-    // //     bool dateBool = false;
-
-    // //     for (int i = 0; i < string.length(); i++) {
-    // //         char c = string[i];
-
-    // //         if (idBool && c >= '0' && c <= '9') {
-    // //             idString += c;
-    // //         } else {
-    // //             idBool = false;
-    // //             nameBool = true;
-    // //         }
-    // //         if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
-    // //             nameString += c;
-    // //         } else {
-    // //             nameBool = false;
-    // //             positionBool = true;
-    // //         }
-    // //         if (positionBool && c >= '0' && c <= '9') {
-    // //             positionString += c;
-    // //         } else {
-    // //             positionBool = false;
-    // //             dateBool = true;
-    // //         }
-    // //         if (dateBool) {
-    // //             dateString += c;
-    // //         }
-    // //     }
-    // //     Item item(stoi(idString), nameString, stoi(positionString), dateString);
-    // //     items->push_back(item);
-    // // }
     for (int i = 0; i < numberOfColumns; i++) {
         items->push_back(fieldValues[i]);
     }
