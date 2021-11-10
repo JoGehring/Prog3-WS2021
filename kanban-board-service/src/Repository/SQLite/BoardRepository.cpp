@@ -139,63 +139,16 @@ void BoardRepository::deleteColumn(int id) {
 
 std::vector<Item> BoardRepository::getItems(int columnId) {
     string sqlGetItems =
-        "SELECT id, title, position, date FROM item WHERE column_id = " + to_string(columnId);
+        "SELECT id, title, position, date FROM item WHERE column_id = '" + to_string(columnId) + "'";
 
     int result = 0;
     char *errormessage = nullptr;
-    std::vector<string> items;
-    std::vector<Item> resultList;
+    std::vector<Item> items;
 
     result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallback, &items, &errormessage);
     handleSQLError(result, errormessage);
 
-    string idString = "";
-    string nameString = "";
-    string positionString = "";
-    string dateString = "";
-
-    for (string s : items) {
-
-        idString = "";
-        nameString = "";
-        positionString = "";
-        dateString = "";
-
-        bool idBool = true;
-        bool nameBool = false;
-        bool positionBool = false;
-        bool dateBool = false;
-
-        for (int i = 0; i < s.length(); i++) {
-            char c = s[i];
-
-            if (idBool && c >= '0' && c <= '9') {
-                idString += c;
-            } else {
-                idBool = false;
-                nameBool = true;
-            }
-            if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
-                nameString += c;
-            } else {
-                nameBool = false;
-                positionBool = true;
-            }
-            if (positionBool && c >= '0' && c <= '9') {
-                positionString += c;
-            } else {
-                positionBool = false;
-                dateBool = true;
-            }
-            if (dateBool) {
-                dateString += c;
-            }
-        }
-        Item item(stoi(idString), nameString, stoi(positionString), dateString);
-        resultList.push_back(item);
-    }
-
-    return resultList;
+    return items;
 }
 
 std::optional<Item> BoardRepository::getItem(int columnId, int itemId) {
@@ -308,10 +261,11 @@ void BoardRepository::createDummyData() {
   I want to show you how the signature of this "callback function" may look like in order to work with sqlite3_exec()
 */
 int BoardRepository::queryCallback(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
-    vector<string> *items = (vector<string> *)data;
+    vector<Item> *items = (vector<Item> *)data;
 
     for (int i = 0; i < numberOfColumns; i++) {
-        items->push_back(fieldValues[i]);
+        Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
+        items->push_back(item);
     }
     return 0;
 }
