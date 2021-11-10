@@ -139,7 +139,7 @@ void BoardRepository::deleteColumn(int id) {
 
 std::vector<Item> BoardRepository::getItems(int columnId) {
     string sqlGetItems =
-        "SELECT id, title, position, date FROM item WHERE column_id = '" + to_string(columnId) + "'";
+        "SELECT id, title, position, date FROM item WHERE column_id = " + to_string(columnId);
 
     int result = 0;
     char *errormessage = nullptr;
@@ -267,46 +267,46 @@ int BoardRepository::queryCallback(void *data, int numberOfColumns, char **field
     string positionString = "";
     string dateString = "";
 
-    for (int i = 0; i < numberOfColumns; i++) {
-        string string = fieldValues[i];
+    // for (int i = 0; i < numberOfColumns; i++) {
+    //     string string = fieldValues[i];
 
-        idString = "";
-        nameString = "";
-        positionString = "";
-        dateString = "";
+    //     idString = "";
+    //     nameString = "";
+    //     positionString = "";
+    //     dateString = "";
 
-        bool idBool = true;
-        bool nameBool = false;
-        bool positionBool = false;
-        bool dateBool = false;
+    //     bool idBool = true;
+    //     bool nameBool = false;
+    //     bool positionBool = false;
+    //     bool dateBool = false;
 
-        for (int i = 0; i < string.length(); i++) {
-            char c = string[i];
+    //     for (int i = 0; i < string.length(); i++) {
+    //         char c = string[i];
 
-            if (idBool && c >= '0' && c <= '9') {
-                idString += c;
-            } else {
-                idBool = false;
-                nameBool = true;
-            }
-            if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
-                nameString += c;
-            } else {
-                nameBool = false;
-                positionBool = true;
-            }
-            if (positionBool && c >= '0' && c <= '9') {
-                positionString += c;
-            } else {
-                positionBool = false;
-                dateBool = true;
-            }
-            if (dateBool) {
-                dateString += c;
-            }
-        }
-        Item item(stoi(idString), nameString, stoi(positionString), dateString);
-        items->push_back(item);
-    }
+    //         if (idBool && c >= '0' && c <= '9') {
+    //             idString += c;
+    //         } else {
+    //             idBool = false;
+    //             nameBool = true;
+    //         }
+    //         if (nameBool && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
+    //             nameString += c;
+    //         } else {
+    //             nameBool = false;
+    //             positionBool = true;
+    //         }
+    //         if (positionBool && c >= '0' && c <= '9') {
+    //             positionString += c;
+    //         } else {
+    //             positionBool = false;
+    //             dateBool = true;
+    //         }
+    //         if (dateBool) {
+    //             dateString += c;
+    //         }
+    //     }
+    //     Item item(stoi(idString), nameString, stoi(positionString), dateString);
+    //     items->push_back(item);
+    // }
     return 0;
 }
