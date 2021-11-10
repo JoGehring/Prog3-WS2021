@@ -297,7 +297,7 @@ int BoardRepository::queryCallbackSingleColumn(void *data, int numberOfColumns, 
     column->setName(fieldValues[1]);
     column->setPos(stoi(fieldValues[2]));
 
-    for (Item i : getItems(fieldValues[0])) {
+    for (Item i : getItems(stoi(fieldValues[0]))) {
         column->addItem(i);
     }
 
