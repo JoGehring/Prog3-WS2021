@@ -186,12 +186,7 @@ std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, i
     char *errorMessage = nullptr;
 
     string sqlPutItem =
-        "UPDATE item"
-        "SET name = '" +
-        title + "', position = '" + to_string(position) + "', date = '" + datetime + "'"
-                                                                                     "WHERE id = '" +
-        to_string(itemId) +
-        "' AND column_id = '" + to_string(columnId) + "'";
+        "UPDATE item SET name = '" + title + "', position = '" + to_string(position) + "', date = '" + datetime + "' WHERE id = '" + to_string(itemId) + "' AND column_id = '" + to_string(columnId) + "'";
 
     result = sqlite3_exec(database, sqlPutItem.c_str(), NULL, 0, &errorMessage);
     handleSQLError(result, errorMessage);
@@ -264,7 +259,7 @@ int BoardRepository::queryCallback(void *data, int numberOfColumns, char **field
 
     for (int i = 0; i < numberOfColumns; i++) {
         Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
-        items->push_back(item);
+        items->insert(item);
     }
     return 0;
 }
