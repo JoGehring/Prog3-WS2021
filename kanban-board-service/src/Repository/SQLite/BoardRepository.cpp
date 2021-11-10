@@ -74,7 +74,19 @@ std::vector<Column> BoardRepository::getColumns() {
 }
 
 std::optional<Column> BoardRepository::getColumn(int id) {
-    throw NotImplementedException();
+    string sqlGetColumn = "SELECT column.id, name, column.position, item.id, title, date, item.position FROM column JOIN item ON column.id = column_id WHERE id = '" + to_string(id) + "'";
+
+    int result = 0;
+    char *errorMessage = nullptr;
+    Column column(0, "", 0);
+
+    result = sqlite3_exec(database, sqlGetColumn.c_str(), queryCallbackSingleColumn, &column, &errorMessage);
+    handleSQLError(result, errorMessage);
+
+    if (SQLITE_OK == result) {
+        return column;
+    }
+    return std::nullopt;
 }
 
 std::optional<Column> BoardRepository::postColumn(std::string name, int position) {
@@ -274,6 +286,20 @@ int BoardRepository::queryCallbackSingleItem(void *data, int numberOfColumns, ch
     item->setTitle(fieldValues[1]);
     item->setPos(stoi(fieldValues[2]));
     item->setTimestamp(fieldValues[3]);
+
+    return 0;
+}
+
+int BoardRepository::queryCallbackSingleColumn(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
+    Column *column = (Column *)data;
+
+    column->setID(stoi(fieldValues[0]));
+    column->setName(fieldValues[1]);
+    column->setPos(stoi(fieldValues[2]));
+
+    for (Item i : getItems(fieldValues[0])) {
+        column->addItem(i);
+    }
 
     return 0;
 }

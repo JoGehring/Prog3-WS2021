@@ -20,6 +20,7 @@ class BoardRepository : public RepositoryIf {
 
     static int queryCallbackAllItems(void *data, int numberOfColumns, char **fieldValues, char **columnNames);
     static int queryCallbackSingleItem(void *data, int numberOfColumns, char **fieldValues, char **columnNames);
+    static int queryCallbackSingleColumn(void *data, int numberOfColumns, char **fieldValues, char **columnNames);
 
   public:
     BoardRepository();
