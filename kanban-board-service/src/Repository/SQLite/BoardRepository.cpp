@@ -147,7 +147,7 @@ std::vector<Item> BoardRepository::getItems(int columnId) {
     char *errormessage = nullptr;
     std::vector<Item> items;
 
-    result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallback, &items, &errormessage);
+    result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallbackAllItems, &items, &errormessage);
     handleSQLError(result, errormessage);
 
     return items;
@@ -183,19 +183,20 @@ std::optional<Item> BoardRepository::postItem(int columnId, std::string title, i
 
 std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, int itemId, std::string title, int position) {
 
-    time_t now = time(0);
-    char *datetime = ctime(&now);
     int result = 0;
     char *errorMessage = nullptr;
 
     string sqlPutItem =
-        "UPDATE item SET title = " + title + ", position = " + to_string(position) + ", date = " + datetime + "WHERE id = '" +
+        "UPDATE item SET title = " + title + ", position = " + to_string(position) + "WHERE id = '" +
         to_string(itemId) + "' AND column_id = '" + to_string(columnId) + "'";
-
-    result = sqlite3_exec(database, sqlPutItem.c_str(), 0, NULL, &errorMessage);
+    Item item(0, "", 0, "");
+    result = sqlite3_exec(database, sqlPutItem.c_str(), queryCallbackSingleItem, &item, &errorMessage);
     handleSQLError(result, errorMessage);
     if (SQLITE_OK == result) {
-        return Item(itemId, title, position, datetime);
+        result = sqlite3_changes(database);
+        if (1 == result) {
+            return Item(itemId, title, position, "datetime");
+        }
     }
     return std::nullopt;
 }
@@ -256,11 +257,22 @@ void BoardRepository::createDummyData() {
   sqlite3_exec takes a "Callback function" as one of its arguments, and since there are many crazy approaches in the wild internet,
   I want to show you how the signature of this "callback function" may look like in order to work with sqlite3_exec()
 */
-int BoardRepository::queryCallback(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
+int BoardRepository::queryCallbackAllItems(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
     vector<Item> *items = (vector<Item> *)data;
 
     Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
     items->push_back(item);
+
+    return 0;
+}
+
+int BoardRepository::queryCallbackSingleItem(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
+    Item *item = (Item *)data;
+
+    item->setID(stoi(fieldValues[0]));
+    item->setTitle(fieldValues[1]);
+    item->setPos(stoi(fieldValues[2]));
+    item->setTimestamp(fieldValues[3]);
 
     return 0;
 }
