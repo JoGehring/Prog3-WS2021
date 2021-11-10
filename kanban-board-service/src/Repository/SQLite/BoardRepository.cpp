@@ -186,8 +186,8 @@ std::optional<Prog3::Core::Model::Item> BoardRepository::putItem(int columnId, i
     char *errorMessage = nullptr;
 
     string sqlPutItem =
-        "UPDATE item SET name = '" + title + "', position = '" + to_string(position) + "', date = '" + datetime + "'"
-                                                                                                                  "WHERE id = '" +
+        "UPDATE item SET title = '" + title + "', position = '" + to_string(position) + "', date = '" + datetime + "'"
+                                                                                                                   "WHERE id = '" +
         to_string(itemId) + "' AND column_id = '" + to_string(columnId) + "'";
 
     Item item(-1, "test", 1, "test");
