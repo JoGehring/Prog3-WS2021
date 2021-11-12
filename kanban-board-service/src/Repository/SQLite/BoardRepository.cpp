@@ -74,7 +74,7 @@ std::vector<Column> BoardRepository::getColumns() {
 }
 
 std::optional<Column> BoardRepository::getColumn(int id) {
-    string sqlGetColumn = "SELECT column.id, name, column.position, item.id, title, date, item.position FROM column JOIN item ON column.id = column_id WHERE id = '" + to_string(id) + "'";
+    string sqlGetColumn = "SELECT column.id, name, column.position FROM column WHERE id = '" + to_string(id) + "'";
 
     int result = 0;
     char *errorMessage = nullptr;
