@@ -78,16 +78,18 @@ std::optional<Column> BoardRepository::getColumn(int id) {
 
     int result = 0;
     char *errorMessage = nullptr;
-    Column column(0, "", 0);
+    Column column(-1, "", 0);
 
     result = sqlite3_exec(database, sqlGetColumn.c_str(), queryCallbackSingleColumn, &column, &errorMessage);
     handleSQLError(result, errorMessage);
 
     if (SQLITE_OK == result) {
-        for (Item i : getItems(id)) {
-            column.addItem(i);
+        if (column.getId() != -1) {
+            for (Item i : getItems(id)) {
+                column.addItem(i);
+            }
+            return column;
         }
-        return column;
     }
     return std::nullopt;
 }
