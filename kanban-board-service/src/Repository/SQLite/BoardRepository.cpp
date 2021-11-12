@@ -171,7 +171,19 @@ std::vector<Item> BoardRepository::getItems(int columnId) {
 }
 
 std::optional<Item> BoardRepository::getItem(int columnId, int itemId) {
-    throw NotImplementedException();
+    string sqlGetItem = "SELECT id, title, position, date FROM item WHERE column_id = '" + to_string(columnId) + "' AND id = '" + to_string(itemId) + "'";
+    int result = 0;
+    char *errorMessage = nullptr;
+    Item returnItem(-1, "", -1, "");
+
+    result = sqlite3_exec(database, sqlGetItem.c_str(), queryCallbackSingleItem, &returnItem, &errorMessage);
+    handleSQLError(result, errorMessage);
+
+    if (SQLITE_OK == result) {
+        if (returnItem.getId() != -1)
+            return returnItem;
+    }
+    return std::nullopt;
 }
 
 std::optional<Item> BoardRepository::postItem(int columnId, std::string title, int position) {
