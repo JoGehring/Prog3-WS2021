@@ -74,7 +74,14 @@ string JsonParser::convertToApiString(Item &item) {
 }
 
 string JsonParser::convertToApiString(std::vector<Item> &items) {
-    throw NotImplementedException();
+    string result = EMPTY_JSON;
+    Document document(kObjectType);
+    for (Item i : items) {
+        Value jsonItems = getJsonValueFromModel(i, document.GetAllocator());
+        result += jsonValueToString(jsonItems);
+    }
+
+    return result;
 }
 
 std::optional<Column> JsonParser::convertColumnToModel(int columnId, std::string &request) {
