@@ -166,7 +166,8 @@ std::vector<Item> BoardRepository::getItems(int columnId) {
 
     result = sqlite3_exec(database, sqlGetItems.c_str(), queryCallbackAllItems, &items, &errormessage);
     handleSQLError(result, errormessage);
-
+    if (items.empty())
+        return {};
     return items;
 }
 
