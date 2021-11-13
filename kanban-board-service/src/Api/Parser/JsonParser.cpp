@@ -74,13 +74,15 @@ string JsonParser::convertToApiString(Item &item) {
 }
 
 string JsonParser::convertToApiString(std::vector<Item> &items) {
-    string result = EMPTY_JSON;
+    string result = "[";
+    string item = EMPTY_JSON;
     Document document(kObjectType);
     for (Item i : items) {
-        Value jsonItems = getJsonValueFromModel(i, document.GetAllocator());
-        result += jsonValueToString(jsonItems);
+        Value jsonItem = getJsonValueFromModel(i, document.GetAllocator());
+        item = jsonValueToString(jsonItem);
+        result += item + ",";
     }
-
+    result += "]";
     return result;
 }
 
