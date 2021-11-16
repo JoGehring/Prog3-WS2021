@@ -80,7 +80,7 @@ string JsonParser::convertToApiString(std::vector<Item> &items) {
     for (Item i : items) {
         Value jsonItem = getJsonValueFromModel(i, document.GetAllocator());
         item = jsonValueToString(jsonItem);
-        result += item + ",";
+        // result += item + ",";
     }
     result += "]";
     return result;
