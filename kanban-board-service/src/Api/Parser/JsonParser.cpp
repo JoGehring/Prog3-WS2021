@@ -85,7 +85,7 @@ string JsonParser::convertToApiString(std::vector<Item> &items) {
             item = jsonValueToString(jsonItem);
             result += item + ",";
         }
-        result = result.substr(0, result.size() - 1);
+        result.pop_back();
         result += "]";
         return result;
     }
