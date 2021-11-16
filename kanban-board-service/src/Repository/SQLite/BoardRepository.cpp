@@ -70,7 +70,24 @@ Board BoardRepository::getBoard() {
 }
 
 std::vector<Column> BoardRepository::getColumns() {
-    throw NotImplementedException();
+    string sqlGetColumns = "SELECT * FROM column";
+
+    int result;
+    char *errorMessage = nullptr;
+    vector<Column> columns;
+
+    result = sqlite3_exec(database, sqlGetColumns.c_str(), queryCallbackAllColumns, &columns, &errorMessage);
+    handleSQLError(result, errorMessage);
+
+    if (SQLITE_OK == result && !columns.empty()) {
+        for (Column c : columns) {
+            for (Item i : getItems(c.getId())) {
+                c.addItem(i);
+            }
+        }
+        return columns;
+    }
+    return {};
 }
 
 std::optional<Column> BoardRepository::getColumn(int id) {
@@ -314,6 +331,16 @@ int BoardRepository::queryCallbackSingleColumn(void *data, int numberOfColumns, 
     column->setID(stoi(fieldValues[0]));
     column->setName(fieldValues[1]);
     column->setPos(stoi(fieldValues[2]));
+
+    return 0;
+}
+
+int BoardRepository::queryCallbackAllColumns(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
+    vector<Column> *columns = static_cast<vector<Column> *>(data);
+
+    Column column(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]));
+
+    columns->push_back(column);
 
     return 0;
 }

@@ -61,7 +61,23 @@ string JsonParser::jsonValueToString(rapidjson::Value const &json) {
 }
 
 string JsonParser::convertToApiString(std::vector<Column> &columns) {
-    throw NotImplementedException();
+    string result = EMPTY_JSON;
+
+    if (!columns.empty()) {
+        result = "[";
+        Document document(kObjectType);
+        string column;
+        for (Column c : columns) {
+            Value jsonColumn = getJsonValueFromModel(c, document.GetAllocator());
+            column = jsonValueToString(jsonColumn);
+            std::vector<Item> items = c.getItems();
+            column += convertToApiString(items);
+            result = column + ",";
+        }
+        result.pop_back();
+        result += "]";
+    }
+    return result;
 }
 
 string JsonParser::convertToApiString(Item &item) {
