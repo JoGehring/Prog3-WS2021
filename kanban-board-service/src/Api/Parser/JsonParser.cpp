@@ -75,7 +75,7 @@ string JsonParser::convertToApiString(Item &item) {
 
 string JsonParser::convertToApiString(std::vector<Item> &items) {
     if (items.empty())
-        return "[]";
+        return EMPTY_JSON;
     else {
         string result = "[";
         string item = EMPTY_JSON;
