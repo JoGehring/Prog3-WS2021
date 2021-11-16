@@ -70,9 +70,6 @@ string JsonParser::convertToApiString(std::vector<Column> &columns) {
         for (Column c : columns) {
             Value jsonColumn = getJsonValueFromModel(c, document.GetAllocator());
             column = jsonValueToString(jsonColumn);
-            vector<Item> itemList = c.getItems();
-            string items = convertToApiString(itemList);
-            column += items;
             result += column + ",";
         }
         result.pop_back();
