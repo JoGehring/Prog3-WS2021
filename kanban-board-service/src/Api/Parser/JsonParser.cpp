@@ -68,8 +68,7 @@ string JsonParser::convertToApiString(std::vector<Column> &columns) {
         Document document(kObjectType);
         string column = EMPTY_JSON;
         for (Column c : columns) {
-            Value jsonColumn = getJsonValueFromModel(c, document.GetAllocator());
-            column = jsonValueToString(jsonColumn);
+            column = convertToApiString(c);
             result += column + ",";
         }
         result.pop_back();
@@ -169,3 +168,4 @@ bool JsonParser::isValidItem(rapidjson::Document const &document) {
 //id: 2 name: testItem1, position: 1
 //id: 3 name: testItem2, position: 2
 //id: 4 name: testItem3, position: 3
+//{"id":3,"name":"testColumn2","position":4,"items":[{"id":5,"title":"testItem1","position":1,"timestamp":"Tue Nov 16 15:07:24 2021\n"},{"id":6,"title":"testItem2","position":2,"timestamp":"Tue Nov 16 15:07:33 2021\n"}]}

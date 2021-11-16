@@ -80,13 +80,15 @@ std::vector<Column> BoardRepository::getColumns() {
     handleSQLError(result, errorMessage);
 
     if (SQLITE_OK == result && !columns.empty()) {
-        for (Column c : columns) {
-            for (Item i : getItems(c.getId())) {
+        for (Column &c : columns) {
+            vector<Item> items = getItems(c.getId());
+            for (Item &i : items) {
                 c.addItem(i);
             }
         }
         return columns;
     }
+
     return {};
 }
 
