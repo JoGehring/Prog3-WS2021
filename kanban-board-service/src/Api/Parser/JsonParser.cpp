@@ -80,7 +80,7 @@ string JsonParser::convertToApiString(std::vector<Item> &items) {
     for (Item i : items) {
         Value jsonItem = getJsonValueFromModel(i, document.GetAllocator());
         item = jsonValueToString(jsonItem);
-        // result += item + ",";
+        result += item;
     }
     result += "]";
     return result;
@@ -146,3 +146,7 @@ bool JsonParser::isValidItem(rapidjson::Document const &document) {
 
     return isValid;
 }
+//id: 2 name: testColumn, position: 3
+//id: 2 name: testItem1, position: 1
+//id: 3 name: testItem2, position: 2
+//id: 4 name: testItem3, position: 3
