@@ -289,7 +289,7 @@ void BoardRepository::createDummyData() {
   I want to show you how the signature of this "callback function" may look like in order to work with sqlite3_exec()
 */
 int BoardRepository::queryCallbackAllItems(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
-    vector<Item> *items = (vector<Item> *)data;
+    vector<Item> *items = static_cast<vector<Item> *>(data);
 
     Item item(stoi(fieldValues[0]), fieldValues[1], stoi(fieldValues[2]), fieldValues[3]);
     items->push_back(item);
