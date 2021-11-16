@@ -66,13 +66,14 @@ string JsonParser::convertToApiString(std::vector<Column> &columns) {
     if (!columns.empty()) {
         result = "[";
         Document document(kObjectType);
-        string column;
+        string column = EMPTY_JSON;
         for (Column c : columns) {
             Value jsonColumn = getJsonValueFromModel(c, document.GetAllocator());
             column = jsonValueToString(jsonColumn);
-            std::vector<Item> items = c.getItems();
-            column += convertToApiString(items);
-            result = column + ",";
+            vector<Item> itemList = c.getItems();
+            string items = convertToApiString(itemList);
+            column += items;
+            result += column + ",";
         }
         result.pop_back();
         result += "]";
