@@ -67,7 +67,7 @@ string JsonParser::convertToApiString(std::vector<Column> &columns) {
         result = "[";
         Document document(kObjectType);
         string column = EMPTY_JSON;
-        for (Column c : columns) {
+        for (Column &c : columns) {
             column = convertToApiString(c);
             result += column + ",";
         }
@@ -93,7 +93,7 @@ string JsonParser::convertToApiString(std::vector<Item> &items) {
         string result = "[";
         string item = EMPTY_JSON;
         Document document(kObjectType);
-        for (Item i : items) {
+        for (Item const i : items) {
             Value jsonItem = getJsonValueFromModel(i, document.GetAllocator());
             item = jsonValueToString(jsonItem);
             result += item + ",";
