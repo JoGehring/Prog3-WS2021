@@ -298,7 +298,7 @@ int BoardRepository::queryCallbackAllItems(void *data, int numberOfColumns, char
 }
 
 int BoardRepository::queryCallbackSingleItem(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
-    Item *item = (Item *)data;
+    Item *item = static_cast<Item *>(data);
 
     item->setID(stoi(fieldValues[0]));
     item->setTitle(fieldValues[1]);
@@ -309,7 +309,7 @@ int BoardRepository::queryCallbackSingleItem(void *data, int numberOfColumns, ch
 }
 
 int BoardRepository::queryCallbackSingleColumn(void *data, int numberOfColumns, char **fieldValues, char **columnNames) {
-    Column *column = (Column *)data;
+    Column *column = static_cast<Column *>(data);
 
     column->setID(stoi(fieldValues[0]));
     column->setName(fieldValues[1]);
