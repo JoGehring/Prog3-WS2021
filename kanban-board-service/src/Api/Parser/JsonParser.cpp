@@ -12,7 +12,14 @@ using namespace rapidjson;
 using namespace std;
 
 string JsonParser::convertToApiString(Board &board) {
-    throw NotImplementedException();
+    Document document(kObjectType);
+
+    string result = "{\"title\":\"" + board.getTitle() + "\",\"columns\":";
+    result += convertToApiString(board.getColumns());
+
+    result += "}";
+
+    return result;
 }
 
 string JsonParser::convertToApiString(Column &column) {
