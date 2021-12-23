@@ -1,0 +1,48 @@
+.container {
+  width: auto;
+  height: auto;
+  min-width: 250px;
+  min-height: 50px;
+  background-color: rgb(238, 93, 93);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0px 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+}
+.name {
+  color: rgb(0, 0, 0);
+  // background-color: aqua;
+  padding: 3% 1%;
+  font-weight: 700;
+  font-size: 120%;
+}
+.header {
+  color: black;
+  font-weight: bolder;
+  font-size: x-large;
+}
+.deleteButton {
+  height: 20px;
+  background-color: rgb(238, 93, 93);
+}
+
+.itemContainer {
+  // background-color: rgb(182, 12, 12);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.itemContainer {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.addButton {
+  height: 20px;
+}

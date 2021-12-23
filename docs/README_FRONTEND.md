@@ -7,6 +7,7 @@
 
 ## Build the Angluar application
 
+- Move to kanban-board-app folder
 - Run `npm install` to install dependencies
 - Run `npm run build` to build frontend
 

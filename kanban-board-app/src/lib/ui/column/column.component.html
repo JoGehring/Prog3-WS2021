@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="header" (mouseover)="showDeleteButton = true" (mouseleave)="showDeleteButton = false">
+    {{ name }}
+    <img  *ngIf="showDeleteButton" (click)="deleteColumn(id)" class="deleteButton" src="../../../assets/deleteButton.png"/>
+  </div>
+
+  <div class="itemContainer">
+    <item
+    *ngFor="let item of items"
+    [id]="item.id"
+    [title]="item.title"
+    (deleteItemEvent)="deleteItem($event)"
+    ></item>
+</div>
+  <div (click)="addItem()" class="addItemContainer">
+    <img class="addButton" src="../../../assets/addButton.png"/>
+  </div>
+</div>

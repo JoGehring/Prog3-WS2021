@@ -1,0 +1,11 @@
+<div class ="container">
+  <div class="title">{{ title }}</div>
+  <div class="columnsContainer" autofocus>
+    <div *ngFor="let column of columns">
+    <column [id]="column.id" [name]="column.name" [items]="column.items" (deleteColumnEvent)="deleteColumn($event)"></column>
+  </div>
+  <div (click)="addEmptyColumn()" class="addButtonContainer">
+    <img class="addButton" src="../../../assets/addButton.png"/>
+  </div>
+</div>
+</div>
