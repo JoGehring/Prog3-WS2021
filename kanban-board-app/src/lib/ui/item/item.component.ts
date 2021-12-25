@@ -16,8 +16,15 @@ export class ItemComponent{
   @Output()
   deleteItemEvent = new EventEmitter<number>();
 
+  @Output()
+  changeTitleEvent = new EventEmitter<string>();
+
   deleteItem(id: number){
     this.deleteItemEvent.emit(id);
+  }
+
+  changeTitle(title: string){
+    this.changeTitleEvent.emit(title);
   }
 
   showDeleteButton: boolean = false;

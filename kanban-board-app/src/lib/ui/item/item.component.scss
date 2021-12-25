@@ -17,8 +17,16 @@
   margin: 5%;
   flex: 1;
   width: 100%;
-
   .deleteButton {
-    height: 10px;
+    height: 15px;
+    margin-left: 25px;
+    margin-top: auto;
   }
+}
+.titleInput {
+  background-color: transparent;
+  border: 0px;
+  font-weight: 700;
+  font-size: 100%;
+  width: 80%;
 }

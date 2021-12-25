@@ -38,11 +38,20 @@
   justify-content: center;
   align-items: center;
 }
-.itemContainer {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
 .addButton {
   height: 20px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: auto;
+}
+.titleInput {
+  background-color: transparent;
+  border: 0px;
+  font-weight: 700;
+  font-size: 100%;
+  width: 60%;
+}
+.addButtonContainer {
+  height: 30px;
 }

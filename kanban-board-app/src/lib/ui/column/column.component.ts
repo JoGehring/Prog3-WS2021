@@ -9,7 +9,7 @@ import { itemModel } from "src/lib/data-access/itemModel";
 
 export class ColumnComponent{
   @Input()
-  name = "column";
+  title = 'column';
 
   @Input()
   id: number;
@@ -35,6 +35,10 @@ export class ColumnComponent{
 
   deleteItem(id: number){
     this.items = this.items.filter(element => element.id != id);
+  }
+
+  changeItemTitle(id: number, newTitle: string){
+    this.items.find(element => element.id = id).title = newTitle;
   }
 
  showDeleteButton: boolean = false;

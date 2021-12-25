@@ -1,6 +1,6 @@
 <div class="container">
   <div (mouseover)="showDeleteButton = true" (mouseleave)="showDeleteButton = false" class="title">
-    {{title}}
+    <input class="titleInput" [(ngModel)]="title" autofocus/>
     <img *ngIf="showDeleteButton" (click)="deleteItem(id)" src="../../../assets/deleteButton.png" class = "deleteButton"/>
   </div>
 </div>

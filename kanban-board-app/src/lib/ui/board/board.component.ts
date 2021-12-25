@@ -9,7 +9,7 @@ import { ColumnModel } from "src/lib/data-access/columnModel";
 
 export class BoardComponent{
   @Input()
-  title = 'board';
+  title = '';
 
   columns: ColumnModel[] = [
     {

@@ -10,6 +10,9 @@
   flex-direction: column;
   justify-content: left;
   align-items: flex-start;
+  overflow: hidden;
+  min-height: 800px;
+  min-width: 1800px;
 }
 
 .title {
