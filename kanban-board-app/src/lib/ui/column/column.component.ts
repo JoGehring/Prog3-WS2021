@@ -1,5 +1,9 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { itemModel } from "src/lib/data-access/itemModel";
+import { DeleteItemService } from "src/lib/feature/deleteItem.service";
+import { GetItemsService } from "src/lib/feature/getItems.service";
+import { PostItemService } from "src/lib/feature/postITem.service";
+import { PutColumnService } from "src/lib/feature/putColumn.service";
 
 @Component({
   selector: 'column',
@@ -7,12 +11,23 @@ import { itemModel } from "src/lib/data-access/itemModel";
   styleUrls: ['./column.component.scss'],
 })
 
-export class ColumnComponent{
+export class ColumnComponent implements OnInit{
+
+  constructor(private changeColumn: PutColumnService, private deleteItemService: DeleteItemService, private postItemService: PostItemService, private getItems: GetItemsService){}
+
+  ngOnInit(): void {
+    this.items = [];
+    this.getItems.getColumnItems(this.id).subscribe(data => this.items = data);
+  }
+
   @Input()
-  title = 'column';
+  title = '';
 
   @Input()
   id: number;
+
+  @Input()
+  position: number;
 
   @Input()
   items: itemModel[];
@@ -21,12 +36,7 @@ export class ColumnComponent{
   deleteColumnEvent = new EventEmitter<number>();
 
   addItem(){
-    this.items.push({
-      id:Math.random(),
-      title: '',
-      position: 0,
-      timestamp: ''
-    })
+    this.postItemService.postItem(this.id).subscribe(data => this.items.push(data));
   }
   deleteColumn(id: number) {
     this.deleteColumnEvent.emit(id);
@@ -34,7 +44,12 @@ export class ColumnComponent{
   }
 
   deleteItem(id: number){
-    this.items = this.items.filter(element => element.id != id);
+    this.deleteItemService.deleteItem(this.id, id).subscribe();
+    this.ngOnInit();
+  }
+
+  changeColumnTitle(){
+
   }
 
   changeItemTitle(id: number, newTitle: string){
