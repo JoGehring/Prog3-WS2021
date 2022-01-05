@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { itemModel } from "src/lib/data-access/itemModel";
+import { PutItemService } from "src/lib/feature/putItem.service";
 
 @Component({
   selector: 'item',
@@ -7,24 +9,33 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 })
 
 export class ItemComponent{
+
+  constructor(private putItem: PutItemService){}
+
   @Input()
   title = "item";
 
   @Input()
-  id = 'item';
+  id: number;
+
+  @Input()
+  position: number;
+
+  @Input()
+  timestamp: string;
 
   @Output()
   deleteItemEvent = new EventEmitter<number>();
 
   @Output()
-  changeTitleEvent = new EventEmitter<string>();
+  changeItemTitleEvent = new EventEmitter<itemModel>();
 
   deleteItem(id: number){
     this.deleteItemEvent.emit(id);
   }
 
-  changeTitle(title: string){
-    this.changeTitleEvent.emit(title);
+  changeTitle(){
+    this.changeItemTitleEvent.emit({id: this.id, title:this.title, position: this.position, timestamp: this.timestamp});
   }
 
   showDeleteButton: boolean = false;

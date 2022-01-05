@@ -1,6 +1,6 @@
 <div class="container">
   <div class="header" (mouseover)="showDeleteButton = true" (mouseleave)="showDeleteButton = false">
-    <input class="titleInput" [(ngModel)]="title" (blur)="changeColumnTitle()" autofocus/>
+    <input class="titleInput" [(ngModel)]="name" (blur)="changeColumnTitle()" autofocus/>
     <img  *ngIf="showDeleteButton" (click)="deleteColumn(id)" class="deleteButton" src="../../../assets/deleteButton.png"/>
   </div>
 
@@ -9,7 +9,10 @@
     *ngFor="let item of items"
     [id]="item.id"
     [title]="item.title"
+    [position]="item.position"
+    [timestamp]="item.timestamp"
     (deleteItemEvent)="deleteItem($event)"
+    (changeItemTitleEvent)="changeItemTitle($event)"
     ></item>
 </div>
   <div (click)="addItem()" class="addItemContainer">

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { itemModel } from "src/lib/data-access/itemModel";
 import { DeleteItemService } from "src/lib/feature/deleteItem.service";
-import { GetItemsService } from "src/lib/feature/getItems.service";
 import { PostItemService } from "src/lib/feature/postITem.service";
 import { PutColumnService } from "src/lib/feature/putColumn.service";
+import { PutItemService } from "src/lib/feature/putItem.service";
 
 @Component({
   selector: 'column',
@@ -11,20 +11,27 @@ import { PutColumnService } from "src/lib/feature/putColumn.service";
   styleUrls: ['./column.component.scss'],
 })
 
-export class ColumnComponent implements OnInit{
+export class ColumnComponent implements OnInit {
 
-  constructor(private changeColumn: PutColumnService, private deleteItemService: DeleteItemService, private postItemService: PostItemService, private getItems: GetItemsService){}
+  constructor(
+    private changeColumn: PutColumnService,
+    private deleteItemService: DeleteItemService,
+    private postItemService: PostItemService,
+    private putColumn: PutColumnService,
+    private putItem: PutItemService
+    ){}
 
-  ngOnInit(): void {
-    this.items = [];
-    this.getItems.getColumnItems(this.id).subscribe(data => this.items = data);
+    ngOnInit(): void {
+    // throw new Error("Method not implemented.");
+    console.log(this.items);
   }
 
-  @Input()
-  title = '';
 
   @Input()
   id: number;
+
+  @Input()
+  name: string = 'new Column';
 
   @Input()
   position: number;
@@ -35,25 +42,27 @@ export class ColumnComponent implements OnInit{
   @Output()
   deleteColumnEvent = new EventEmitter<number>();
 
+  @Output()
+  deleteItemEvent = new EventEmitter<number>();
+
   addItem(){
     this.postItemService.postItem(this.id).subscribe(data => this.items.push(data));
   }
   deleteColumn(id: number) {
     this.deleteColumnEvent.emit(id);
-    console.log('delete button pressed in Column id: ' + id);
   }
 
-  deleteItem(id: number){
-    this.deleteItemService.deleteItem(this.id, id).subscribe();
-    this.ngOnInit();
+  deleteItem(itemId: number){
+    this.deleteItemService.deleteItem(this.id, itemId).subscribe();
+    this.deleteItemEvent.emit(itemId);
   }
 
   changeColumnTitle(){
-
+    this.putColumn.putColumn({id: this.id, name: this.name, position: this.position, items: this.items}).subscribe((response) => console.log(response));
   }
 
-  changeItemTitle(id: number, newTitle: string){
-    this.items.find(element => element.id = id).title = newTitle;
+  changeItemTitle(item: itemModel){
+    this.putItem.putItem(this.id, item).subscribe((response)=> console.log(response));
   }
 
  showDeleteButton: boolean = false;

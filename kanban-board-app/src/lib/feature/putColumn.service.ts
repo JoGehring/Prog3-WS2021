@@ -8,8 +8,8 @@ import { ColumnModel } from "../data-access/columnModel";
 export class PutColumnService{
    constructor(private httpClient: HttpClient){}
 
-   putColumn(column: ColumnModel): Observable<string>{
-     return this.httpClient.put<string>('http://localhost:8080/api/board/columns/'+column.id, column);
+   putColumn(body: ColumnModel): Observable<ColumnModel>{
+     return this.httpClient.put<ColumnModel>('http://localhost:8080/api/board/columns/'+body.id, body);
    }
 
 }

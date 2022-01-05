@@ -8,10 +8,7 @@ import { itemModel } from "../data-access/itemModel";
 export class PostItemService{
    constructor(private httpClient: HttpClient){}
 
-   //posCounter: number = -1;
-
    postItem(columnid: number): Observable<itemModel>{
-    //this.posCounter++;
      return this.httpClient.post<itemModel>('http://localhost:8080/api/board/columns/'+columnid+'/items', {id: Math.floor(Math.random()*1000), title: '', position: Math.floor(Math.random()*1000), timestamp: ''});
    }
 
